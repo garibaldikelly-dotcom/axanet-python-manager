@@ -21,8 +21,8 @@ jobs:
       - name: Asignar Miembros del Equipo
         id: team_members
         run: |
-          echo "miembro_a=desarrollador-A" >> $GITHUB_OUTPUT
-          echo "miembro_b=desarrollador-B" >> $GITHUB_OUTPUT
+          echo "miembro_a=quesopodrido29-creator" >> $GITHUB_OUTPUT
+          echo "miembro_b=developer28-creator" >> $GITHUB_OUTPUT
           
       # -----------------------------------------------------------------
       # FLUJO 1: CREACIÓN DE NUEVO CLIENTE
