@@ -1,1 +1,73 @@
+name: Notificacion de Acciones de Cliente
 
+on:
+  push:
+    branches:
+      - main
+      - feature/*
+
+jobs:
+  notificar_accion:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del Código
+        uses: actions/checkout@v4
+
+      # Obtener el mensaje del último commit
+      - name: Obtener mensaje de Commit
+        id: commit
+        run: echo "message=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
+
+      - name: Asignar Miembros del Equipo
+        id: team_members
+        run: |
+          echo "miembro_a=desarrollador-A" >> $GITHUB_OUTPUT
+          echo "miembro_b=desarrollador-B" >> $GITHUB_OUTPUT
+          
+      # -----------------------------------------------------------------
+      # FLUJO 1: CREACIÓN DE NUEVO CLIENTE
+      # -----------------------------------------------------------------
+      - name: Notificar CREACIÓN de Nuevo Cliente
+        if: contains(steps.commit.outputs.message, 'feat: crear cliente')
+        run: |
+          echo "============================================="
+          echo " NOTIFICACIÓN A MIEMBROS DEL EQUIPO DE AXANET "
+          echo "============================================="
+          echo "Acción Detectada: 👨‍💻 CREACIÓN de Nuevo Cliente"
+          echo "Mensaje del Commit: ${{ steps.commit.outputs.message }}"
+          echo "--------------------------------------------------------"
+          echo "📧 Enviando a: ${{ steps.team_members.outputs.miembro_a }}"
+          echo "📧 Enviando a: ${{ steps.team_members.outputs.miembro_b }}"
+          echo "============================================="
+
+      # -----------------------------------------------------------------
+      # FLUJO 2: ACTUALIZACIÓN DE CLIENTE RECURRENTE
+      # -----------------------------------------------------------------
+      - name: Notificar ACTUALIZACIÓN de Cliente Recurrente
+        if: contains(steps.commit.outputs.message, 'fix: actualizar cliente')
+        run: |
+          echo "============================================="
+          echo " NOTIFICACIÓN A MIEMBROS DEL EQUIPO DE AXANET "
+          echo "============================================="
+          echo "Acción Detectada: 🛠️ ACTUALIZACIÓN de Cliente Recurrente"
+          echo "Mensaje del Commit: ${{ steps.commit.outputs.message }}"
+          echo "--------------------------------------------------------"
+          echo "📧 Enviando a: ${{ steps.team_members.outputs.miembro_a }}"
+          echo "📧 Enviando a: ${{ steps.team_members.outputs.miembro_b }}"
+          echo "============================================="
+
+      # -----------------------------------------------------------------
+      # FLUJO 3: CONSULTA DE UN CLIENTE (Simulación de Acceso)
+      # -----------------------------------------------------------------
+      - name: Notificar CONSULTA de Cliente
+        if: contains(steps.commit.outputs.message, 'docs: consultar cliente')
+        run: |
+          echo "============================================="
+          echo " NOTIFICACIÓN A MIEMBROS DEL EQUIPO DE AXANET "
+          echo "============================================="
+          echo "Acción Detectada: 🔍 CONSULTA de Cliente"
+          echo "Mensaje del Commit: ${{ steps.commit.outputs.message }}"
+          echo "--------------------------------------------------------"
+          echo "📧 Enviando a: ${{ steps.team_members.outputs.miembro_a }}"
+          echo "📧 Enviando a: ${{ steps.team_members.outputs.miembro_b }}"
+          echo "============================================="
