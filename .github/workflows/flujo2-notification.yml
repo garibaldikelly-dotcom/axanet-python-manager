@@ -1,42 +1,32 @@
-name: Notificacion de Acciones de Cliente
+name: 2. Actualizar Cliente Recurrente
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-      - feature/*
+    inputs:
+      nombre_cliente:
+        description: 'Nombre del cliente existente a actualizar'
+        required: true
+      nueva_solicitud:
+        description: 'Detalle de la nueva solicitud o servicio'
+        required: true
 
 jobs:
-  notificar_accion:
+  notificar_actualizacion:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout del Código
-        uses: actions/checkout@v4
-
-      # Obtener el mensaje del último commit
-      - name: Obtener mensaje de Commit
-        id: commit
-        run: echo "message=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
-
-      - name: Asignar Miembros del Equipo
-        id: team_members
+      - name: 💬 Notificación de Acción
         run: |
-          echo "miembro_a=quesopodrido29-creator" >> $GITHUB_OUTPUT
-          echo "miembro_b=developer28-creator" >> $GITHUB_OUTPUT
-      
-      # -----------------------------------------------------------------
-      # FLUJO 2: ACTUALIZACIÓN DE CLIENTE RECURRENTE
-      # -----------------------------------------------------------------
-      - name: Notificar ACTUALIZACIÓN de Cliente Recurrente
-        if: "${{ contains(steps.commit.outputs.message, 'fix: actualizar cliente') }}"
+          CLIENTE="${{ github.event.inputs.nombre_cliente }}"
+          SOLICITUD="${{ github.event.inputs.nueva_solicitud }}"
+          
+          # Mensaje de aviso para el equipo
+          echo "::notice title=CLIENTE ACTUALIZADO::[FLUJO 2] Se ha agregado una nueva solicitud al registro del cliente."
+          echo "::notice title=CLIENTE ACTUALIZADO::Cliente: $CLIENTE"
+          echo "::notice title=CLIENTE ACTUALIZADO::Nueva Solicitud: $SOLICITUD"
+          echo "Todos los miembros del equipo han sido notificados de esta actualización."
+          
+      - name: 💻 Simular Ejecución de Python
+        # NOTA: Aquí iría la lógica real para llamar a tu clase ClienteManager.actualizar_cliente()
         run: |
-          echo "============================================="
-          echo " NOTIFICACIÓN A MIEMBROS DEL EQUIPO DE AXANET "
-          echo "============================================="
-          echo "Acción Detectada: 🛠️ ACTUALIZACIÓN de Cliente Recurrente"
-          echo "Mensaje del Commit: ${{ steps.commit.outputs.message }}"
-          echo "--------------------------------------------------------"
-          echo "📧 Enviando a: ${{ steps.team_members.outputs.miembro_a }}"
-          echo "📧 Enviando a: ${{ steps.team_members.outputs.miembro_b }}"
-          echo "============================================="
+          echo "Simulando ejecución de la función actualizar_cliente con la nueva solicitud."
+          echo "El archivo '$CLIENTE'.txt sería modificado."
