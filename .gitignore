@@ -2,6 +2,7 @@
 __pycache__/
 datos_clientes/
 *.pyc
+.vscode/
 =======
 # Byte-compiled / optimized / DLL files
 __pycache__/
