@@ -1,42 +1,37 @@
-name: Notificacion de Acciones de Cliente
+name: 1. Crear Nuevo Cliente
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-      - feature/*
+    inputs:
+      nombre_cliente:
+        description: 'Nombre completo del nuevo cliente (Ej: Juan Perez)'
+        required: true
+      contacto:
+        description: 'Detalle de contacto (Ej: juan.perez@email.com)'
+        required: true
+      servicio_inicial:
+        description: 'Servicio solicitado inicialmente'
+        required: true
 
 jobs:
-  notificar_accion:
+  notificar_creacion:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout del Código
-        uses: actions/checkout@v4
-
-      # Obtener el mensaje del último commit
-      - name: Obtener mensaje de Commit
-        id: commit
-        run: echo "message=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
-
-      - name: Asignar Miembros del Equipo
-        id: team_members
+      - name: 💬 Notificación de Acción
         run: |
-          echo "miembro_a=quesopodrido29-creator" >> $GITHUB_OUTPUT
-          echo "miembro_b=developer28-creator" >> $GITHUB_OUTPUT
+          CLIENTE="${{ github.event.inputs.nombre_cliente }}"
+          CONTACTO="${{ github.event.inputs.contacto }}"
+          SERVICIO="${{ github.event.inputs.servicio_inicial }}"
           
-      # -----------------------------------------------------------------
-      # FLUJO 1: CREACIÓN DE NUEVO CLIENTE
-      # -----------------------------------------------------------------
-      - name: Notificar CREACIÓN de Nuevo Cliente
-        if: "${{ contains(steps.commit.outputs.message, 'feat: crear cliente') }}"
+          # Mensaje de aviso para el equipo
+          echo "::notice title=CLIENTE CREADO::[FLUJO 1] Un nuevo cliente ha sido registrado."
+          echo "::notice title=CLIENTE CREADO::Nombre: $CLIENTE"
+          echo "::notice title=CLIENTE CREADO::Contacto: $CONTACTO"
+          echo "::notice title=CLIENTE CREADO::Servicio Inicial: $SERVICIO"
+          echo "Todos los miembros del equipo han sido notificados de esta creación."
+          
+      - name: 💻 Simular Ejecución de Python
+        # NOTA: Aquí iría la lógica real para llamar a tu clase ClienteManager.crear_cliente()
         run: |
-          echo "============================================="
-          echo " NOTIFICACIÓN A MIEMBROS DEL EQUIPO DE AXANET "
-          echo "============================================="
-          echo "Acción Detectada: 👨‍💻 CREACIÓN de Nuevo Cliente"
-          echo "Mensaje del Commit: ${{ steps.commit.outputs.message }}"
-          echo "--------------------------------------------------------"
-          echo "📧 Enviando a: ${{ steps.team_members.outputs.miembro_a }}"
-          echo "📧 Enviando a: ${{ steps.team_members.outputs.miembro_b }}"
-          echo "============================================="
+          echo "Simulando ejecución de la función crear_cliente con los datos proporcionados..."
+          echo "El archivo '$CLIENTE'.txt sería creado en el directorio 'datos_clientes'."
