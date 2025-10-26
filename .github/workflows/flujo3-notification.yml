@@ -1,0 +1,42 @@
+name: Notificacion de Acciones de Cliente
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - feature/*
+
+jobs:
+  notificar_accion:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del Código
+        uses: actions/checkout@v4
+
+      # Obtener el mensaje del último commit
+      - name: Obtener mensaje de Commit
+        id: commit
+        run: echo "message=$(git log -1 --pretty=%B)" >> $GITHUB_OUTPUT
+
+      - name: Asignar Miembros del Equipo
+        id: team_members
+        run: |
+          echo "miembro_a=quesopodrido29-creator" >> $GITHUB_OUTPUT
+          echo "miembro_b=developer28-creator" >> $GITHUB_OUTPUT
+          
+      # -----------------------------------------------------------------
+      # FLUJO 3: CONSULTA DE UN CLIENTE (Simulación de Acceso)
+      # -----------------------------------------------------------------
+      - name: Notificar CONSULTA de Cliente
+        if: "${{ contains(steps.commit.outputs.message, 'docs: consultar cliente') }}"
+        run: |
+          echo "============================================="
+          echo " NOTIFICACIÓN A MIEMBROS DEL EQUIPO DE AXANET "
+          echo "============================================="
+          echo "Acción Detectada: 🔍 CONSULTA de Cliente"
+          echo "Mensaje del Commit: ${{ steps.commit.outputs.message }}"
+          echo "--------------------------------------------------------"
+          echo "📧 Enviando a: ${{ steps.team_members.outputs.miembro_a }}"
+          echo "📧 Enviando a: ${{ steps.team_members.outputs.miembro_b }}"
+          echo "============================================="

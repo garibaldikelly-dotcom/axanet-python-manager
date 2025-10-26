@@ -1,6 +1,7 @@
 name: Notificacion de Acciones de Cliente
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
